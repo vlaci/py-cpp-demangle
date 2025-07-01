@@ -25,11 +25,6 @@ jobs:
         with:
           platforms: all
 
-      - name: Setup rust
-        uses: actions-rs/toolchain@v1
-        with:
-          toolchain: stable
-
       - name: Build wheels
         uses: pypa/cibuildwheel@v3.0.0
         env:
