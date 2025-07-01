@@ -78,6 +78,8 @@ jobs:
           pattern: wheels-*
           path: wheelhouse
           merge-multiple: true
+      - name: check wheels
+        run: find .
       - name: Create GitHub Release
         uses: fnkr/github-action-ghr@v1.3
         env:
