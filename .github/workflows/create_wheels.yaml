@@ -38,9 +38,9 @@ jobs:
           CIBW_ENVIRONMENT_WINDOWS: 'PATH="$UserProfile\.cargo\bin;$PATH"'
 
       - name: Upload Binaries
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
-          name: wheels
+          name: wheels-${{ matrix.os }}
           path: wheelhouse
 
   test-wheels:
@@ -54,9 +54,9 @@ jobs:
     - uses: actions/checkout@v3
       with:
         path: py_cpp_demangle_source
-    - uses: actions/download-artifact@v3
+    - uses: actions/download-artifact@v4
       with:
-        name: wheels
+        name: wheels-${{ matrix.os }}
     - name: Set up Python
       uses: actions/setup-python@v4
       with:
@@ -74,9 +74,11 @@ jobs:
     if: "startsWith(github.ref, 'refs/tags/')"
     needs: [test-wheels]
     steps:
-      - uses: actions/download-artifact@v3
+      - uses: actions/download-artifact@v4
         with:
-          name: wheels
+          pattern: wheels-*
+          path: wheelhouse
+          merge-multiple: true
       - name: Create GitHub Release
         uses: fnkr/github-action-ghr@v1.3
         env:
